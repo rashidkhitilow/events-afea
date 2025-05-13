@@ -30,13 +30,13 @@ class DatabaseSeeder extends Seeder
         Event::create([
             'name' => 'PHP Event',
             'total_seats' => 15,
-            'available_seats' => 12,
+            'available_seats' => 15,
             'status' => 'in-progress',
         ]);
         Event::create([
             'name' => 'Laravel Event',
             'total_seats' => 10,
-            'available_seats' => 4,
+            'available_seats' => 10,
             'status' => 'in-progress',
         ]);
     }
