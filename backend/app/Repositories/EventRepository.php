@@ -9,25 +9,28 @@ class EventRepository
     {
         // get all event if available seats is greater than 0 and status is not booked and get all available seat numbers
         return Event::where('available_seats', '>', 0)
-            ->where('status', '!=', 'booked')
-            ->with('user_event')
-            ->get()
-            ->map(function ($event) {
-                $event->available_seat_numbers = range(1, $event->available_seats);
-                return $event;
-            });
+    ->with('user_event')
+    ->get()
+    ->map(function ($event) {
+        $takenSeats = $event->user_event->pluck('seat_number')->toArray();
+        $allSeats = range(1, $event->available_seats);
+        $event->available_seat_numbers = array_values(array_diff($allSeats, $takenSeats));
+        return $event;
+    });
     }
 
     public function getById($id)
     {
             return Event::where('available_seats', '>', 0)
-                ->where('id', $id)
-                ->with('user_event')
-                ->get()
-                ->map(function ($event) {
-                    $event->available_seat_numbers = range(1, $event->available_seats);
-                    return $event;
-                });
+    ->where('id', $id)
+    ->with('user_event')
+    ->get()
+    ->map(function ($event) {
+        $takenSeats = $event->user_event->pluck('seat_number')->toArray();
+        $allSeats = range(1, $event->available_seats);
+        $event->available_seat_numbers = array_values(array_diff($allSeats, $takenSeats));
+        return $event;
+    });
     }
 
     public function create(array $data)
